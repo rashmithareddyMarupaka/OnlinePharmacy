@@ -14,8 +14,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" 
         integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA==" 
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="bootstyle.css">
-    <title>Staff Admin Dashboard</title>
+    <link rel="stylesheet" href="user.css">
+    <title>Customer Admin Dashboard</title>
     
 </head>
 
@@ -28,27 +28,31 @@
         <div class="bg-white" id="wrapper">
 
             <div class="sidebar-heading text-center py-4 primary-feet fs-4 fw-bold text-uppercase border-bottom">
-                <i class="fa fa-medkit" aria-hidden="true"></i>Staff
+                <i class="fa fa-medkit" aria-hidden="true"></i> Pharmacy
             </div>
 
             <div class="list-grpup list-group-flush#y-3">
-            <a href="#" class="list-group-item list-group-item-action bg-transparent second-text active">
+               <a href="#" class="list-group-item list-group-item-action bg-transparent second-text active">
                   <i class="fa fa-snowflake-o" aria-hidden="true"></i>Admin
-
                </a>
-            <a href="#" class="list-group-item list-group-item-action bg-transparent second-text fw-bold">
-            <i class="fa fa-users" aria-hidden="true"></i>Staff
-            </a>
-              
-               
                <a href="#" class="list-group-item list-group-item-action bg-transparent second-text fw-bold">
-               <i class="fas fa-project-diagram me-2"></i>Update Products
+                   <i class="fa fa-users" aria-hidden="true"></i>Add Customer
             </a>
             <a href="#" class="list-group-item list-group-item-action bg-transparent second-text fw-bold">
-                   <i class="fas fa-project-diagram me-2"></i>Update Products
+                   <i class="fas fa-project-diagram me-2"></i>Update Customer
             </a>
             <a href="#" class="list-group-item list-group-item-action bg-transparent second-text fw-bold">
-                   <i class="fas fa-project-diagram me-2"></i>Delete Products
+                   <i class="fas fa-project-diagram me-2"></i>Delete customer
+            </a>
+            <a href="#" class="list-group-item list-group-item-action bg-transparent second-text fw-bold">
+                <i class="fa fa-shopping-basket" aria-hidden="true"></i>Add store
+            </a>
+            <a href="#" class="list-group-item list-group-item-action bg-transparent second-text fw-bold">
+                   <i class="fas fa-project-diagram me-2"></i>Delete Store
+            </a>
+            <a href="#" class="list-group-item list-group-item-action bg-transparent second-text fw-bold">
+                   <i class="fas fa-project-diagram me-2"></i>Update Store
+            </a>
             <a href="#" class="list-group-item list-group-item-action bg-transparent second-text fw-bold">
                   <i class="fa fa-eye" aria-hidden="true"></i>view
             </a>

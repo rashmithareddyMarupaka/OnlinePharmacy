@@ -1,150 +1,142 @@
 <?php
+    require_once('config.php');
+?>
 
-require_once "config.php";
- 
-$username = $password = $confirm_password = "";
-$username_err = $password_err = $confirm_password_err = "";
- 
+<?php
+    $error = " ";
+    session_start();
+    //When login button is pressed
+    if(isset($_POST['login'])){ 
+        // username and password 
+        $email  = $_POST['email']; 
+        $password = md5($_POST['password']);
+        $user = $_POST['user'];
+       
+        if($user == 'Customer'){
 
-if($_SERVER["REQUEST_METHOD"] == "POST"){
- 
-    // Validate username
-    if(empty(trim($_POST["username"]))){
-        $username_err = "Please enter a username.";
-    } elseif(!preg_match('/^[a-zA-Z0-9_]+$/', trim($_POST["username"]))){
-        $username_err = "Username can only contain letters, numbers, and underscores.";
-    } else{
-        // Prepare a select statement
-        $sql = "SELECT id FROM users WHERE username = ?";
-        
-        if($stmt = mysqli_prepare($link, $sql)){
-            // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "s", $param_username);
-            
-            // Set parameters
-            $param_username = trim($_POST["username"]);
-            
-            // Attempt to execute the prepared statement
-            if(mysqli_stmt_execute($stmt)){
-                /* store result */
-                mysqli_stmt_store_result($stmt);
-                
-                if(mysqli_stmt_num_rows($stmt) == 1){
-                    $username_err = "This username is already taken.";
-                } else{
-                    $username = trim($_POST["username"]);
-                }
-            } else{
-                echo "Oops! Something went wrong. Please try again later.";
+            $query = "SELECT * FROM customer WHERE email = :email AND password = :password";  
+            $statement = $db_conn->prepare($query);  
+            $statement->execute(  
+                        array(  
+                            'email'     =>     $email,  
+                            'password'     =>  $password  
+                        )  
+                    );  
+            $count = $statement->rowCount();  
+            if($count > 0)  
+            {  
+                    $_SESSION["email"] = $email;
+                    $_SESSION["user"] = $user;  
+                    header("location:welcome_customer.php");  
+            }  
+            else  
+            {  
+                    $error = 'Please enter valid credentials ';  
             }
 
-            // Close statement
-            mysqli_stmt_close($stmt);
         }
-    }
-    
-    // Validate password
-    if(empty(trim($_POST["password"]))){
-        $password_err = "Please enter a password.";     
-    } elseif(strlen(trim($_POST["password"])) < 6){
-        $password_err = "Password must have atleast 6 characters.";
-    } else{
-        $password = trim($_POST["password"]);
-    }
-    
-    // Validate confirm password
-    if(empty(trim($_POST["confirm_password"]))){
-        $confirm_password_err = "Please confirm password.";     
-    } else{
-        $confirm_password = trim($_POST["confirm_password"]);
-        if(empty($password_err) && ($password != $confirm_password)){
-            $confirm_password_err = "Password did not match.";
-        }
-    }
-    
-    // Check input errors before inserting in database
-    if(empty($username_err) && empty($password_err) && empty($confirm_password_err)){
-        
-        // Prepare an insert statement
-        $sql = "INSERT INTO users (username, password) VALUES (?, ?)";
-         
-        if($stmt = mysqli_prepare($link, $sql)){
-            // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "ss", $param_username, $param_password);
-            
-            // Set parameters
-            $param_username = $username;
-            $param_password = password_hash($password, PASSWORD_DEFAULT); // Creates a password hash
-            
-            // Attempt to execute the prepared statement
-            if(mysqli_stmt_execute($stmt)){
-                // Redirect to login page
-                header("location: login.php");
-            } else{
-                echo "Oops! Something went wrong. Please try again later.";
+        else {
+            $query = "SELECT * FROM staff WHERE email = :email AND password = :password";  
+            $statement = $db_conn->prepare($query);  
+            $statement->execute(  
+                        array(  
+                            'email'     =>     $email,  
+                            'password'     =>  $password  
+                        )  
+                    );  
+            $count = $statement->rowCount();  
+            if($count > 0)  
+            {  
+                    $_SESSION["email"] = $email;
+                    $_SESSION["user"] = $user;
+                    $result = $statement->fetch();
+                    $staff_level = $result['stafflevel'];
+                    if($staff_level == 0){
+                        header("location:welcome_admin.php");
+                    }
+                    else{
+                        header("location:welcome_manager.php");
+                    }
+            }  
+            else  
+            {  
+                    $error = 'Please enter valid credentials '; 
+                    //$error = $password; 
             }
-
-            // Close statement
-            mysqli_stmt_close($stmt);
         }
+          
+        
     }
-    
-    // Close connection
-    mysqli_close($link);
-}
-
 ?>
 
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UFT-8">
     <title>Online_Pharmacy</title>
-    <link rel="stylesheet" href="style.css">
-<style>
-h1 {
-    color: red;
-    font-style: bold;
-    font-size: 50px;
-}
-</style>   
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
 </head>
+    <section class="vh-100" style="background-color: #9A616D;">
+    
+    <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col col-xl-10">
+            <div class="card" style="border-radius: 1rem;">
+            <div class="row g-0">
+                <div class="col-md-6 col-lg-5 d-none d-md-block">
+                <img
+                    src="medicine.jpeg"
+                    alt="login form"
+                    class="img-fluid" style="border-radius: 1rem 0 0 1rem;"
+                />
+                </div>
+                <div class="col-md-6 col-lg-7 d-flex align-items-center">
+                    <div class="card-body p-4 p-lg-5 text-black">
 
-<body>
-    <div class="main">
-        <div class="navbar">
-            <div class="icon">
-                <h1>pharmacy</h1>
-            </div>
-            <div class="menu">
-                <ul>
-                    <li><a href="#">HOME</a></li>
-                    <li><a href="#">ABOUT</a></li>
-                    <li><a href="#">STORES</a></li>
-                </ul>
+                        <form action= "index.php" method="post">
+
+                            <div class="d-flex align-items-center mb-3 pb-1">
+                                <span class="h1 fw-bold mb-0">Online Pharmacy</span>
+                            </div>
+
+                            <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Sign into your account</h5>
+
+                            <div class="form-outline mb-4">
+                                <label for="exampleFormControlSelect1">Select User</label>
+                                <select class="form-control" id="exampleFormControlSelect1" name="user" required>
+                                <option>Customer</option>
+                                <option>Staff</option>
+                                </select>
+                            </div>
+
+                            <div class="form-outline mb-4">
+                                <input type="email" id="form2Example17" class="form-control form-control-lg" name="email" required />
+                                <label class="form-label" for="form2Example17">Email address</label>
+                            </div>
+                            
+                            <div class="form-outline mb-4">
+                                <input type="password" id="form2Example27" class="form-control form-control-lg" name="password" required />
+                                <label class="form-label" for="form2Example27">Password</label>
+                            </div>
+
+                            <div class="pt-1 mb-4">
+                                <button class="btn btn-dark btn-lg btn-block" type="submit" name="login">Login</button>
+                            </div>
+
+                            <p class="mb-5 pb-lg-2" style="color: #393f81;">Don't have an account? <a href="register.php" style="color: #393f81;">Register here</a></p>
+                            
+                            <div style = "font-size:20px; color:#cc0000; margin-top:2px"><?php echo $error; ?></div>
+                            
+                            <a href="#!" class="small text-muted">Terms of use.</a>
+                            <a href="#!" class="small text-muted">Privacy policy</a>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="content">
-            <h1>online medical store</h1>
-            <p class="par"> Avaliable all kind of medicines from different stores</p>
-            <div class="form">
-                <h2>Login</h2>
-                <input type="email" name="email" placeholder="Enter Email Here">
-                <input type="password" name="password" placeholder="Enter Password Here">
-                <button class="btnn"><a href="#">Login</a></button>
-                <p class="link">Forgot Password<br></p>
-                <p class="link">Don't have an account<br>
-                <a href="register.php">Sign up  </a> here</a></p>
-            </div>
-            <div class = form_register>
-                <form action="">
-            </div>
-
-
         </div>
-
+        </div>
     </div>
-</body>
+    </section>
 
 </html>
