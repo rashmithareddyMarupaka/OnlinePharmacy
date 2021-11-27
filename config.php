@@ -1,6 +1,6 @@
 <?php
 
-    $db_dsn = "mysql:host=localhost;dbname=online_phramacy_mod";
+    $db_dsn = "mysql:host=localhost;dbname=online_pharmacy";
     $db_user = "root";
     $db_pass = "";
 
