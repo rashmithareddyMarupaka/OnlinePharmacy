@@ -1,5 +1,6 @@
 <?php
     require_once('config.php');
+    session_start();
 ?>
 
 <!DOCTYPE html>
@@ -15,12 +16,11 @@
         integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA==" 
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="user.css">
-    <title>Customer Admin Dashboard</title>
+    <title>Manager Dashboard</title>
     
 </head>
 
 <body>
-
     <div class="d-flex" id="wrapper">
 
         <!--- Sidebar starts here ----->
@@ -34,16 +34,9 @@
         </div>   
 
         <div class="list-grpup list-group-flush#y-3">
-        <a href="admin_customers.php" class="list-group-item list-group-item-action bg-transparent second-text fw-bold">
-            <i class="fa fa-cogs" aria-hidden="true"></i>customer
-            </a>
-        <a href="admin_stores.php" class="list-group-item list-group-item-action bg-transparent second-text fw-bold">
-            <i class="fa fa-cogs" aria-hidden="true"></i>Store
-            </a>
-        
-        <a href="admin_managers.php" class="list-group-item list-group-item-action bg-transparent second-text fw-bold">
-            <i class="fa fa-cogs" aria-hidden="true"></i>Manager
-            </a>
+        <a href="manager_products.php" class="list-group-item list-group-item-action bg-transparent second-text fw-bold">
+            <i class="fa fa-cogs" aria-hidden="true"></i>Product
+        </a>
         <a href="logout.php" class="list-group-item list-group-item-action bg-transparent second-text fw-bold">
             <i class="fa fa-sign-out" aria-hidden="true"></i>logout
         </a>

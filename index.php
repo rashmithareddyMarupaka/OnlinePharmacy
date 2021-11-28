@@ -1,10 +1,10 @@
 <?php
     require_once('config.php');
+    session_start();
 ?>
 
 <?php
     $error = " ";
-    session_start();
     //When login button is pressed
     if(isset($_POST['login'])){ 
         // username and password 
@@ -25,8 +25,8 @@
             $count = $statement->rowCount();  
             if($count > 0)  
             {  
-                    $_SESSION["email"] = $email;
-                    $_SESSION["user"] = $user;  
+                    $_SESSION['email'] = $email;
+                    $_SESSION['user'] = $user;  
                     header("location:welcome_customer.php");  
             }  
             else  
@@ -47,8 +47,8 @@
             $count = $statement->rowCount();  
             if($count > 0)  
             {  
-                    $_SESSION["email"] = $email;
-                    $_SESSION["user"] = $user;
+                    $_SESSION['email'] = $email;
+                    $_SESSION['user'] = $user;
                     $result = $statement->fetch();
                     $staff_level = $result['stafflevel'];
                     if($staff_level == 0){
