@@ -44,7 +44,7 @@
             <a href="#" class="list-group-item list-group-item-action bg-transparent second-text fw-bold">
                   <i class="fa fa-eye" aria-hidden="true"></i>Cart
             </a>
-            <a href="#" class="list-group-item list-group-item-action bg-transparent second-text fw-bold">
+            <a href="customer_products.php" class="list-group-item list-group-item-action bg-transparent second-text fw-bold">
                   <i class="fa fa-eye" aria-hidden="true"></i>Buy
             </a>
             <a href="#" class="list-group-item list-group-item-action bg-transparent second-text fw-bold">
@@ -57,36 +57,7 @@
 
         <!------ sidebar ends here ----->
 
-        <div id="page-content-wrapper">
-
-            <nav class="navbar navbar-expand-lg navbar-light bg-transparent py-4 px-4">
-            <div class="d-flex align-items-center">
-                <i class="fas fa-align-left primary-text fs-4 me-3" id="menu-toggle"></i>
-                <h2 class="fs-2 n-0">Dashboard</h2>
-            </div>
-
-            <button class="navbar-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsupportedcontent"
-            aria-controls="navbarsupportedcontent" aria-expanded="false" aria-label="toggel navigation">
-                <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="navbarsupportedcontent">
-            <ul class="navbar-nav ns-auto nb-2 nb-lg-0">
-                <li class="nav-item-dropdown">
-                    <a class="nav-link dropdown-toggle second-text fw-bold" href="#" id="navbarDropdown" 
-                        role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="fas fa-user me-2"></i>Tito
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                      <li><a class="dropdown-item" href="#">profile</a></li>
-                      <li><a  class="dropdown-item" href="#" >settings</a></li>
-                      <li><a  class="dropdown-item" href="#" >logout</a></li>
-                    </ul>
-               </li>
-            </ul>
-        </div>
-            </nav>
-            </div>
+       
             
     </div>
 

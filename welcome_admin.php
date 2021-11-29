@@ -2,6 +2,16 @@
     require_once('config.php');
 ?>
 
+<?php
+
+    $sqlQuery ="SELECT count(product.pid) as counter,storename FROM available INNER JOIN product ON product.pid = available.pid INNER JOIN store ON available.storeid = store.storeid group by store.storeid";
+        
+    $statement = $db_conn->prepare($sqlQuery);  
+    $statement->execute();
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -57,8 +67,29 @@
         <!------ sidebar ends here ----->
 
         <div id="page-content-wrapper">
-        </div>
-            
+        <br class="mb-3">
+            <table id="editableTable" class="table table-bordered">
+               
+                	  
+                  
+                <thead>
+                    <tr>
+                        <th>Storename</th>
+                        <th>Number of Product</th>
+                        													
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php while( $user = $statement->fetch() ) { ?>
+                    <tr>
+                    <td><?php echo $user['storename']; ?></td>
+                    <td><?php  echo $user['counter']; ?></td>
+                    			   				   				  
+                    </tr>
+                    <?php } ?>
+                </tbody>
+                    </table>    
+                    </div>
     </div>
 
 
