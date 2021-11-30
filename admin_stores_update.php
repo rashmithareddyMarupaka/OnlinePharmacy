@@ -6,7 +6,7 @@
     session_start();
     //$_SESSION['regName'] = $regValue;
     //echo $_SESSION['customerid'];
-    $storeid= $_GET['id'];
+    $productid= $_GET['id'];
 ?>
 
 <?php

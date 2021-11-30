@@ -27,7 +27,7 @@
             $insert = $db_conn->prepare($sql_statement);
             $out = $insert->execute([$firstname,$lastname,$email,$phonenumber,$password,$address,$dob]);
             if($out){
-                $message =  'Registration successful and please login ';
+                $message =  'Registration successfull and please login ';
             }
             else{
                 $message = 'Username already taken or try again';
@@ -37,10 +37,6 @@
         {  
                 $message = 'Username already taken or try again';
         }
-
-
-
-        
     }
 ?>
 

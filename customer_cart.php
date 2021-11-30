@@ -1,8 +1,24 @@
 <?php
     require_once('config.php');
     require_once('session_customer.php');
+?>
 
+<?
     
+    if(isset($_POST['delete'])){
+        //echo "Update button pressed";
+        $count_delete=$_POST['todelete'];
+        unset($_SESSION['pid'][$count_delete]);
+        unset($_SESSION['storeid'][$count_delete]);
+        unset($_SESSION['unitprice'][$count_delete]);
+        unset($_SESSION['qunatity'][$count_delete]);
+        //Update Database
+
+    }
+
+    if(isset($_POST['checkoutcart'])){
+         
+    }
 ?>
 
 <!DOCTYPE html>
@@ -18,7 +34,7 @@
         integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA==" 
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="user.css">
-    <title>Customer Admin Dashboard</title>
+    <title>Customer Dashboard</title>
     
 </head>
 
@@ -29,14 +45,14 @@
         <!--- Sidebar starts here ----->
 
         <div class="bg-white" id="wrapper">
-
+        
             <div class="sidebar-heading text-center py-4 primary-feet fs-4 fw-bold text-uppercase border-bottom">
-                <i class="fa fa-medkit" aria-hidden="true"></i> Customer
-            </div>
-
+                <i class="fa fa-medkit" aria-hidden="true"></i> Pharmacy
+            </div>   
+    
             <div class="list-grpup list-group-flush#y-3">
-               
-               <a href="welcome_customer.php" class="list-group-item list-group-item-action bg-transparent second-text fw-bold">
+            
+            <a href="welcome_customer.php" class="list-group-item list-group-item-action bg-transparent second-text fw-bold">
                    <i class="fa fa-users" aria-hidden="true"></i>Home
             </a>
             <a href="customer_previousorders.php" class="list-group-item list-group-item-action bg-transparent second-text fw-bold">
@@ -58,7 +74,45 @@
 
         <!------ sidebar ends here ----->
 
-       
+        <div id="page-content-wrapper">
+        <h1 style="text-align:center;">Cart</h1>
+            <table id="editableTable" class="table table-bordered">
+                <thead>
+                    <tr>
+                        
+                        <th>pid</th>
+                        <th>storeid</th>
+                        <th>unitprice</th>
+                        <th>quantity</th>
+                        <th>remove</th>
+                													
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php $count = $_SESSION['count']-1?>
+                    <?php while( $count > 0) { ?>
+                    <tr>
+                    <td><?php echo $_SESSION['pid'][$count]; ?></td>
+                    <td><?php echo $_SESSION['storeid'][$count]; ?></td>
+                    <td><?php echo $_SESSION['unitprice'][$count]; ?></td>
+                    <td><?php echo $_SESSION['quantity'][$count]; ?></td>
+                    <form action="customer_cart.php" method="post">
+                    <input type="hidden" value="<?php echo $count;?>" name="todelete" />
+                    <td> <input class="btn btn-primary" type="submit" name="delete" value="Delete"></td>
+                    </form>
+                    
+                    <?php $count = $count -1 ;?>
+   				   				   				  
+                    </tr>
+                    <?php } ?>
+                </tbody>
+            </table>
+
+            <div class="text-center">
+                <a href="welcome_customer.php" class="btn btn-primary btn-lg">Checkout Cart</a>
+            </div>
+            
+        </div>
             
     </div>
 

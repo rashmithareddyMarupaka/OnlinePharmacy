@@ -1,5 +1,6 @@
 <?php
     require_once('config.php');
+    require_once('session_admin.php');
 ?>
 
 <?php
@@ -10,7 +11,6 @@
     $statement->execute();
 
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -66,17 +66,15 @@
 
         <!------ sidebar ends here ----->
 
+        
         <div id="page-content-wrapper">
         <br class="mb-3">
             <table id="editableTable" class="table table-bordered">
-               
-                	  
-                  
+
                 <thead>
                     <tr>
                         <th>Storename</th>
-                        <th>Number of Product</th>
-                        													
+                        <th>Number of Product</th>													
                     </tr>
                 </thead>
                 <tbody>
@@ -90,6 +88,9 @@
                 </tbody>
                     </table>    
                     </div>
+        </div>
+        
+            
     </div>
 
 

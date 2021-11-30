@@ -1,14 +1,31 @@
 <?php
     require_once('config.php');
+    require_once('session_customer.php');
+    
 ?>
 
 <?php
-    session_start();
-    //$_SESSION['regName'] = $regValue;
-?>
 
-<?php
-    $sqlQuery ="SELECT productname,description,type,unitprice,quantity,storename FROM available INNER JOIN product ON product.pid = available.pid INNER JOIN store ON available.storeid = store.storeid";
+
+    if(isset($_POST['addtocart'])){
+        $_SESSION['count'] = $_SESSION['count'] + 1;
+        $_SESSION['storeid'][] = $_POST['storeid'];
+        $_SESSION['pid'][]=$_POST['pid'];
+        $_SESSION['unitprice'][]=$_POST['unitprice'];
+        $_SESSION['quantity'][]=$_POST['newquantity'];
+        
+        $sql_statement = "UPDATE available SET quantity=:quantity Where pid = :pid and storeid =:storeid";
+        $insert = $db_conn->prepare($sql_statement);
+        $out = $insert->execute(
+            array(  
+                'quantity'     =>     ($_POST['quantity']-$_POST['newquantity']),  
+                'pid'     =>  $_POST['pid'],
+                'storeid'     =>     $_POST['storeid']
+            )
+        );
+
+    }
+    $sqlQuery ="SELECT store.storeid,product.pid,productname,description,type,unitprice,quantity,storename FROM available INNER JOIN product ON product.pid = available.pid INNER JOIN store ON available.storeid = store.storeid";
     
     $statement = $db_conn->prepare($sqlQuery);  
     $statement->execute();
@@ -75,24 +92,22 @@
                 <i class="fa fa-medkit" aria-hidden="true"></i> Pharmacy
             </div>   
     
-            <div class="list-grpup list-group-flush#y-3">
             <a href="welcome_customer.php" class="list-group-item list-group-item-action bg-transparent second-text fw-bold">
-                <i class="fa fa-cogs" aria-hidden="true"></i>Home
-                </a>
-            <a href="welcome_customer.php" class="list-group-item list-group-item-action bg-transparent second-text fw-bold">
-                <i class="fa fa-cogs" aria-hidden="true"></i>Previous Orders
-                </a>
-            <a href="welcome_customer.php" class="list-group-item list-group-item-action bg-transparent second-text fw-bold">
-                <i class="fa fa-cogs" aria-hidden="true"></i>Buy
-                </a>
-            <a href="welcome_customer.php" class="list-group-item list-group-item-action bg-transparent second-text fw-bold">
-                <i class="fa fa-cogs" aria-hidden="true"></i>Cart
-                </a>
+                   <i class="fa fa-users" aria-hidden="true"></i>Home
+            </a>
+            <a href="customer_previousorders.php" class="list-group-item list-group-item-action bg-transparent second-text fw-bold">
+                   <i class="fas fa-project-diagram me-2"></i>Previous Orders
+            </a>
+            <a href="customer_cart.php" class="list-group-item list-group-item-action bg-transparent second-text fw-bold">
+                  <i class="fa fa-eye" aria-hidden="true"></i>Cart
+            </a>
+            <a href="customer_products.php" class="list-group-item list-group-item-action bg-transparent second-text fw-bold">
+                  <i class="fa fa-eye" aria-hidden="true"></i>Buy
+            </a>
             <a href="logout.php" class="list-group-item list-group-item-action bg-transparent second-text fw-bold">
                 <i class="fa fa-sign-out" aria-hidden="true"></i>logout
             </a>
                      
-            </div>
 
         </div>
 
@@ -140,6 +155,15 @@
                     <td><?php echo $user['type']; ?></td>
                     <td><?php echo $user['storename']; ?></td>
                     <td><?php echo $user['quantity']; ?></td>
+                    <td><?php echo $user['unitprice']; ?></td>
+                    <form action="customer_products.php" method="post">
+                    <td>  <input class="form-control" type="number" min="1" max="<?php echo $user['quantity']; ?>" step="1" name="newquantity" required> </td>
+                    <input type="hidden" value="<?php echo $user['storeid'];?>" name="storeid" />
+                    <input type="hidden" value="<?php echo $user['pid'];?>" name="pid" />
+                    <input type="hidden" value="<?php echo $user['unitprice'];?>" name="unitprice" />
+                    <input type="hidden" value="<?php echo $user['quantity'];?>" name="quantity" />
+                    <td> <input class="btn btn-primary" type="submit" name="addtocart" value="Add to cart"> </td>
+                    </form>
    				   				   				  
                     </tr>
                     <?php } ?>

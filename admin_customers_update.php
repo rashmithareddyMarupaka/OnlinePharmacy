@@ -1,11 +1,9 @@
 <?php
     require_once('config.php');
+    require_once('session_admin.php');
 ?>
 
 <?php
-    session_start();
-    //$_SESSION['regName'] = $regValue;
-    //echo $_SESSION['customerid'];
     $customerid= $_GET['id'];
 ?>
 

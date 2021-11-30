@@ -1,24 +1,26 @@
 <?php
     require_once('config.php');
+    require_once('session_customer.php')
 ?>
 
-<?php
-    session_start();
-    //$_SESSION['regName'] = $regValue;
-?>
 
 <?php
-    $sqlQuery ="SELECT customerid,orderid,pid,unitprice,quantity,orderdate FROM orderhistory where customerid=2";
-    
+
+    $sqlQuery ="SELECT customerid FROM customer where email=:email";
     $statement = $db_conn->prepare($sqlQuery);  
-    $statement->execute();
-
-  
-
-      
-    
-
-
+    $statement->execute(
+        array(  
+        'email'     =>     $result['email']
+        )
+    );
+    $data = $statement->fetch();
+    $sqlQuery ="SELECT customerid,orderid,pid,unitprice,quantity,orderdate FROM orderhistory where customerid=:customerid";
+    $statement = $db_conn->prepare($sqlQuery);  
+    $statement->execute(
+        array(
+        'customerid'     =>     $data['customerid']
+        )
+    );
 ?>
 
 <!DOCTYPE html>
@@ -60,18 +62,19 @@
             </div>
     
             <div class="list-grpup list-group-flush#y-3">
+            
             <a href="welcome_customer.php" class="list-group-item list-group-item-action bg-transparent second-text fw-bold">
-                <i class="fa fa-cogs" aria-hidden="true"></i>Home
-                </a>
-            <a href="welcome_customer.php" class="list-group-item list-group-item-action bg-transparent second-text fw-bold">
-                <i class="fa fa-cogs" aria-hidden="true"></i>Previous Orders
-                </a>
-            <a href="welcome_customer.php" class="list-group-item list-group-item-action bg-transparent second-text fw-bold">
-                <i class="fa fa-cogs" aria-hidden="true"></i>Buy
-                </a>
-            <a href="welcome_customer.php" class="list-group-item list-group-item-action bg-transparent second-text fw-bold">
-                <i class="fa fa-cogs" aria-hidden="true"></i>Cart
-                </a>
+                   <i class="fa fa-users" aria-hidden="true"></i>Home
+            </a>
+            <a href="customer_previousorders.php" class="list-group-item list-group-item-action bg-transparent second-text fw-bold">
+                   <i class="fas fa-project-diagram me-2"></i>Previous Orders
+            </a>
+            <a href="customer_cart.php" class="list-group-item list-group-item-action bg-transparent second-text fw-bold">
+                  <i class="fa fa-eye" aria-hidden="true"></i>Cart
+            </a>
+            <a href="customer_products.php" class="list-group-item list-group-item-action bg-transparent second-text fw-bold">
+                  <i class="fa fa-eye" aria-hidden="true"></i>Buy
+            </a>
             <a href="logout.php" class="list-group-item list-group-item-action bg-transparent second-text fw-bold">
                 <i class="fa fa-sign-out" aria-hidden="true"></i>logout
             </a>

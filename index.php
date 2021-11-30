@@ -26,7 +26,13 @@
             if($count > 0)  
             {  
                     $_SESSION['email'] = $email;
-                    $_SESSION['user'] = $user;  
+                    $_SESSION['user'] = 'customer';
+                   
+                    $_SESSION['pid'] = array();
+                    $_SESSION['storeid'] = array();
+                    $_SESSION['unitprice'] = array();
+                    $_SESSION['quantity'] = array();
+                    $_SESSION['count'] = 0;  
                     header("location:welcome_customer.php");  
             }  
             else  
@@ -48,13 +54,14 @@
             if($count > 0)  
             {  
                     $_SESSION['email'] = $email;
-                    $_SESSION['user'] = $user;
                     $result = $statement->fetch();
                     $staff_level = $result['stafflevel'];
                     if($staff_level == 0){
+                        $_SESSION['user'] = 'admin';
                         header("location:welcome_admin.php");
                     }
                     else{
+                        $_SESSION['user'] = 'manager';
                         header("location:welcome_manager.php");
                     }
             }  

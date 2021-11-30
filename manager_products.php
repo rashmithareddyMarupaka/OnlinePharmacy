@@ -1,10 +1,11 @@
 <?php
     require_once('config.php');
-    session_start();
+    require_once('session_manager.php');
 ?>
+
 <?php
     $email = $_SESSION['email'];
-    $sqlQuery = "SELECT productname,description,type,unitprice,quantity,storename FROM available INNER JOIN product ON product.pid = available.pid INNER JOIN store ON available.storeid = store.storeid INNER JOIN staff ON staff.staffid = store.staffid where staff.email = :email ";
+    $sqlQuery = "SELECT store.storeid,product.pid,productname,description,type,unitprice,quantity,storename FROM available INNER JOIN product ON product.pid = available.pid INNER JOIN store ON available.storeid = store.storeid INNER JOIN staff ON staff.staffid = store.staffid where staff.email = :email ";
     $statement = $db_conn->prepare($sqlQuery);
     $statement->execute(
         array(  
@@ -62,7 +63,7 @@
         <div id="page-content-wrapper">
             <br class="mb-3">
             <div class="text-center">
-                <a href="manager_products_add.php" class="btn btn-primary btn-lg">Add Producer</a>
+                <a href="manager_products_add.php" class="btn btn-primary btn-lg">Add Product</a>
             </div>
             <br class="mb-3">
             <table id="editableTable" class="table table-bordered">
@@ -85,7 +86,7 @@
                     <td><?php echo $user['storename']; ?></td>
                     <td><?php echo $user['unitprice']; ?></td>
                     <td><?php echo $user['quantity']; ?></td>
-                    <td><a href="manager_products_update.php?id=<?php echo $user['productid'];?>">edit/delete</a></td> 				   				   				  
+                    <td><a href="manager_products_update.php?id=<?php echo $user['pid'];?>&sid=<?php echo $user['storeid'];?>">edit/delete</a></td> 				   				   				  
                     </tr>
                     <?php } ?>
                 </tbody>

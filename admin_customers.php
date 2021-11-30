@@ -1,10 +1,6 @@
 <?php
     require_once('config.php');
-?>
-
-<?php
-    session_start();
-    //$_SESSION['regName'] = $regValue;
+    require_once('session_admin.php');
 ?>
 
 <?php

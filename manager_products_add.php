@@ -1,16 +1,66 @@
 <?php
     require_once('config.php');
-    session_start();
+    require_once('session_manager.php')
 ?>
+
 <?php
-    $email = $_SESSION['email'];
-    $sqlQuery = "SELECT productname,description,type,unitprice,quantity,storename FROM available INNER JOIN product ON product.pid = available.pid INNER JOIN store ON available.storeid = store.storeid INNER JOIN staff ON staff.staffid = store.staffid where staff.email = :email ";
-    $statement = $db_conn->prepare($sqlQuery);
-    $statement->execute(
-        array(  
-        'email'     =>     $email  
-    )  );
+    $message =" ";
+    if(isset($_POST['add'])){
+        $productname = $_POST['productname'];
+        $description = $_POST['description'];
+        $type  = $_POST['type']; 
+        $unitprice  = $_POST['unitprice']; 
+        $query = "SELECT * FROM product WHERE productname = :productname ";  
+        $statement = $db_conn->prepare($query);  
+        $statement->execute(  
+                    array(  
+                        'productname'     =>     $productname
+                    )  
+                );  
+        $count = $statement->rowCount();
+        echo $count;  
+        if($count == 0)  
+        {  
+        
+            $sql_statement = "INSERT INTO product (productname, description, type) VALUES(?,?,?)";
+            $insert = $db_conn->prepare($sql_statement);
+            $out = $insert->execute([$productname,$description,$type]);
+
+            $query = "SELECT * FROM product WHERE productname = :productname ";  
+            $statement = $db_conn->prepare($query);  
+            $statement->execute(  
+                        array(  
+                            'productname'     =>     $productname
+                        )  
+                    );  
+            $result = $statement->fetch();
+            $pid = $result['pid'];
+           
+
+            $query = "SELECT storeid FROM store ";  
+            $statement = $db_conn->prepare($query);  
+            $statement->execute(  
+                        array(  
+                            'productname'     =>     $productname
+                        )  
+                    );
+            
+            while( $result = $statement->fetch() ){
+                
+                $sql_statement = "INSERT INTO available (pid,storeid,quantity,unitprice) VALUES(?,?,?,?)";
+                $insert = $db_conn->prepare($sql_statement);
+                $out = $insert->execute([$pid,$result['storeid'],0,$unitprice]);
+                 
+            }
+            $message = 'Product added'; 
+        }  
+        else  
+        {  
+                $message = 'Failed to add product';
+        }
+    }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -67,10 +117,10 @@
             </div>
             </nav>
             <br class="mb-3">
-            <form action="admin_stores_add.php" method="post">
+            <form action="manager_products_add.php" method="post">
                 <div class="container">
                         <div class="row">
-                            <h1>Add Product</h1>
+                            <h1>Add Product for all stores</h1>
                             <br class="mb-3">
                             <div class="col-sm-3">
                                 <label for="productname"><b>Product Name</b></label>
@@ -82,20 +132,14 @@
                                 <label for="description"><b>Description</b></label>
                                 <input class="form-control" type="text" name="description" required>
                                 <br class="mb-3">
-                                <label for="unitprice"><b>Store Name</b></label>
-                                <input class="form-control" type="tel" name="unitprice" required>
-                                <br class="mb-3">
-                                <label for="quantity"><b>Quantity</b></label>
-                                <input class="form-control" type="tel" name="quantity" required>
                                 <br class="mb-3">
                                 <label for="unitprice"><b>Unit Price</b></label>
-                                <input class="form-control" type="tel" name="unitprice" required>
-                                <br class="mb-3">
+                                <input class="form-control" type="text" name="unitprice" required>
                                 <br class="mb-3">
                                 <br class="mb-3">
                                 <div style = "font-size:20px; color:#cc0000; margin-top:2px"><?php echo $message; ?></div>
                                 <br class="mb-3">
-                                <input class="btn btn-primary"type="submit" name="signup" value="Add Product">
+                                <input class="btn btn-primary"type="submit" name="add" value="Add Product">
                                 <br class="mb-3">
                             </div>
                         </div>
