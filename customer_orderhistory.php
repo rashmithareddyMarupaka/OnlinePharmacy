@@ -97,7 +97,6 @@
                         <th>pid</th>
                         <th>unitprice</th>
                         <th>quantity</th>
-                        
                         <th>order date</th>
                         
                 													

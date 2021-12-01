@@ -21,11 +21,13 @@
         echo $count;  
         if($count == 0)  
         {  
-        
+            
+            //Insert into the product table
             $sql_statement = "INSERT INTO product (productname, description, type) VALUES(?,?,?)";
             $insert = $db_conn->prepare($sql_statement);
             $out = $insert->execute([$productname,$description,$type]);
 
+            //Now ask for the PID for the product inserted
             $query = "SELECT * FROM product WHERE productname = :productname ";  
             $statement = $db_conn->prepare($query);  
             $statement->execute(  
@@ -36,15 +38,12 @@
             $result = $statement->fetch();
             $pid = $result['pid'];
            
-
+            //Get all the store IDS
             $query = "SELECT storeid FROM store ";  
             $statement = $db_conn->prepare($query);  
-            $statement->execute(  
-                        array(  
-                            'productname'     =>     $productname
-                        )  
-                    );
+            $statement->execute();
             
+            //Make Quam
             while( $result = $statement->fetch() ){
                 
                 $sql_statement = "INSERT INTO available (pid,storeid,quantity,unitprice) VALUES(?,?,?,?)";

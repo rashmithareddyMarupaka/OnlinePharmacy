@@ -32,7 +32,7 @@
 
     if(isset($_POST['filterhl'])){
         //echo "Update button pressed";
-        $sqlQuery ="SELECT productname,description,type,unitprice,quantity,storename FROM available INNER JOIN product ON product.pid = available.pid INNER JOIN store ON available.storeid = store.storeid order by unitprice desc";
+        $sqlQuery ="SELECT store.storeid,product.pid,productname,description,type,unitprice,quantity,storename FROM available INNER JOIN product ON product.pid = available.pid INNER JOIN store ON available.storeid = store.storeid order by unitprice desc";
     
         $statement = $db_conn->prepare($sqlQuery);  
         $statement->execute();   
@@ -40,7 +40,7 @@
 
     if(isset($_POST['filterlh'])){
         //echo "Update button pressed";
-        $sqlQuery ="SELECT productname,description,type,unitprice,quantity,storename FROM available INNER JOIN product ON product.pid = available.pid INNER JOIN store ON available.storeid = store.storeid order by unitprice asc";
+        $sqlQuery ="SELECT store.storeid,product.pid,productname,description,type,unitprice,quantity,storename FROM available INNER JOIN product ON product.pid = available.pid INNER JOIN store ON available.storeid = store.storeid order by unitprice asc";
     
         $statement = $db_conn->prepare($sqlQuery);  
         $statement->execute();   
@@ -49,7 +49,7 @@
     if(isset($_POST['filterword'])){
         //echo "Update button pressed";
         $keyword=$_POST['Keyword'];
-        $sqlQuery ="SELECT productname,description,type,unitprice,quantity,storename FROM available INNER JOIN product ON product.pid = available.pid INNER JOIN store ON available.storeid = store.storeid where product.type=:type";
+        $sqlQuery ="SELECT store.storeid,product.pid,productname,description,type,unitprice,quantity,storename FROM available INNER JOIN product ON product.pid = available.pid INNER JOIN store ON available.storeid = store.storeid where product.type=:type";
     
         $statement = $db_conn->prepare($sqlQuery);  
         $statement->execute(

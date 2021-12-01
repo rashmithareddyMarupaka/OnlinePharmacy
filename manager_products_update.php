@@ -86,15 +86,16 @@
 
 <?php
     
-    $sqlQuery = "SELECT product.pid,productname,description,type,unitprice,quantity,storename FROM available INNER JOIN product ON product.pid = available.pid INNER JOIN store ON available.storeid = store.storeid INNER JOIN staff ON staff.staffid = store.staffid where staff.email = :email and product.pid = :pid";
+    $sqlQuery = "SELECT product.pid,productname,description,type,unitprice,quantity,storename FROM available INNER JOIN product ON product.pid = available.pid INNER JOIN store ON available.storeid = store.storeid INNER JOIN staff ON staff.staffid = store.staffid where staff.email = :email and product.pid = :pid and store.storeid = :sid";
     $statement = $db_conn->prepare($sqlQuery);
     $statement->execute(
         array(  
         'email'     =>     $email  ,
-         'pid'     =>     $pid
+         'pid'     =>     $pid ,
+         'sid'     =>     $storeid
     )  );
     $count = $statement->rowCount();
-    
+    echo $count;
     if($count != 1 )  
     {  
         $error = 'Product does not exist';  

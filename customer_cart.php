@@ -4,6 +4,14 @@
 ?>
 
 <?
+    $query = "SELECT customerid FROM customer WHERE email = :email";  
+    $statement = $db_conn->prepare($query);  
+    $statement->execute(  
+                array(  
+                    'email'     =>     $_SESSION['email'];
+                )  
+            );
+    $result = $statement-?fetch();  
     
     if(isset($_POST['delete'])){
         //echo "Update button pressed";
@@ -17,7 +25,15 @@
     }
 
     if(isset($_POST['checkoutcart'])){
-         
+        $count = $_SESSION['count']-1;
+        while($count>=0){
+            $sql_statement = "INSERT INTO store (customerid,pid,unitprice,quantity) VALUES(?,?,?,?)";
+            $insert = $db_conn->prepare($sql_statement);
+            $out = $insert->execute([$result['customerid'],$_SESSION['pid'][$count],$_SESSION['unitprice'][$count],$_SESSION['quantity'][$count]]);
+            $count = $count -1;
+        }
+        $_SESSION['count'] = 0;
+        
     }
 ?>
 
