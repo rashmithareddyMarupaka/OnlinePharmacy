@@ -3,15 +3,16 @@
     require_once('session_customer.php');
 ?>
 
-<?
+<?php
     $query = "SELECT customerid FROM customer WHERE email = :email";  
     $statement = $db_conn->prepare($query);  
     $statement->execute(  
                 array(  
-                    'email'     =>     $_SESSION['email'];
+                    'email'     =>     $_SESSION['email']
                 )  
             );
-    $result = $statement-?fetch();  
+    $result = $statement->fetch();
+    //echo $result['customerid'];
     
     if(isset($_POST['delete'])){
         //echo "Update button pressed";
@@ -21,19 +22,24 @@
         unset($_SESSION['unitprice'][$count_delete]);
         unset($_SESSION['qunatity'][$count_delete]);
         //Update Database
-
     }
 
     if(isset($_POST['checkoutcart'])){
         $count = $_SESSION['count']-1;
         while($count>=0){
-            $sql_statement = "INSERT INTO store (customerid,pid,unitprice,quantity) VALUES(?,?,?,?)";
+            $sql_statement = "INSERT INTO orderhistory (customerid,pid,unitprice,quantity,orderdate) VALUES(?,?,?,?,?)";
             $insert = $db_conn->prepare($sql_statement);
-            $out = $insert->execute([$result['customerid'],$_SESSION['pid'][$count],$_SESSION['unitprice'][$count],$_SESSION['quantity'][$count]]);
+            $date = date("Y-m-d");
+            $out = $insert->execute([$result['customerid'],$_SESSION['pid'][$count],$_SESSION['unitprice'][$count],$_SESSION['quantity'][$count],$date]);
             $count = $count -1;
         }
         $_SESSION['count'] = 0;
         
+        header("location:welcome_customer.php");
+        
+    }
+    if(isset($_POST['delete'])){
+        $count = $_SESSION['count-1']-1;
     }
 ?>
 
@@ -71,7 +77,7 @@
             <a href="welcome_customer.php" class="list-group-item list-group-item-action bg-transparent second-text fw-bold">
                    <i class="fa fa-users" aria-hidden="true"></i>Home
             </a>
-            <a href="customer_previousorders.php" class="list-group-item list-group-item-action bg-transparent second-text fw-bold">
+            <a href="customer_orderhistory.php" class="list-group-item list-group-item-action bg-transparent second-text fw-bold">
                    <i class="fas fa-project-diagram me-2"></i>Previous Orders
             </a>
             <a href="customer_cart.php" class="list-group-item list-group-item-action bg-transparent second-text fw-bold">
@@ -106,7 +112,8 @@
                 </thead>
                 <tbody>
                     <?php $count = $_SESSION['count']-1?>
-                    <?php while( $count > 0) { ?>
+                    
+                    <?php while( $count >= 0) { ?>
                     <tr>
                     <td><?php echo $_SESSION['pid'][$count]; ?></td>
                     <td><?php echo $_SESSION['storeid'][$count]; ?></td>
@@ -125,7 +132,9 @@
             </table>
 
             <div class="text-center">
-                <a href="welcome_customer.php" class="btn btn-primary btn-lg">Checkout Cart</a>
+                    <form action="customer_cart.php" method="post">
+                    <input class="btn btn-primary" type="submit" name="checkoutcart" value="Check Out Cart">
+                    </form>
             </div>
             
         </div>

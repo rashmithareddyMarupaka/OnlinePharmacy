@@ -8,11 +8,27 @@
 
 
     if(isset($_POST['addtocart'])){
-        $_SESSION['count'] = $_SESSION['count'] + 1;
-        $_SESSION['storeid'][] = $_POST['storeid'];
-        $_SESSION['pid'][]=$_POST['pid'];
-        $_SESSION['unitprice'][]=$_POST['unitprice'];
-        $_SESSION['quantity'][]=$_POST['newquantity'];
+
+        $count = $_SESSION['count']-1;
+        $updated_session = 0;
+
+        while($count>=0){
+            
+            if($_SESSION['pid'][$count]==$_POST['pid']&&$_SESSION['storeid'][$count]==$_POST['storeid']){
+                $updated_session = 1;
+                $_SESSION['quantity'][$count] = $_SESSION['quantity'][$count] + $_POST['newquantity'];
+            }
+            $count = $count -1;
+        }
+       
+       
+        if($updated_session == 0){
+            $_SESSION['storeid'][] = $_POST['storeid'];
+            $_SESSION['pid'][]=$_POST['pid'];
+            $_SESSION['unitprice'][]=$_POST['unitprice'];
+            $_SESSION['quantity'][]=$_POST['newquantity'];
+            $_SESSION['count'] = $_SESSION['count']+1;
+        }
         
         $sql_statement = "UPDATE available SET quantity=:quantity Where pid = :pid and storeid =:storeid";
         $insert = $db_conn->prepare($sql_statement);

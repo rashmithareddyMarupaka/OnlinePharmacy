@@ -10,7 +10,7 @@
     $statement = $db_conn->prepare($sqlQuery);  
     $statement->execute(
         array(  
-        'email'     =>     $result['email']
+        'email'     =>     $_SESSION['email']
         )
     );
     $data = $statement->fetch();
@@ -93,7 +93,7 @@
                     <tr>
                         
                         <th>customerid</th>
-                        <th>orderid</th>
+                        
                         <th>pid</th>
                         <th>unitprice</th>
                         <th>quantity</th>
@@ -107,7 +107,7 @@
                     <tr>
                     
                     <td><?php echo $user['customerid']; ?></td>
-                    <td><?php echo $user['orderid']; ?></td>
+                    
                     <td><?php echo $user['pid']; ?></td>
                     <td><?php echo $user['unitprice']; ?></td>
                     <td><?php echo $user['quantity']; ?></td>

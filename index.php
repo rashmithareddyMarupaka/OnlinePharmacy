@@ -53,6 +53,7 @@
             $count = $statement->rowCount();  
             if($count > 0)  
             {  
+                    $_SESSION['count'] = 0;
                     $_SESSION['email'] = $email;
                     $result = $statement->fetch();
                     $staff_level = $result['stafflevel'];
